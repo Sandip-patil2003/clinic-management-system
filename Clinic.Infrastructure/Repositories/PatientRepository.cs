@@ -75,6 +75,7 @@ public class PatientRepository : IPatientRepository
     public async Task<Patient> GetByIdAsync(Guid patientId)
     {
         var entity = await _context.Patients
+            .Include(p => p.Address)
             .AsNoTracking()
             .FirstOrDefaultAsync(p => p.PatientGuid == patientId && p.IsActive);
 
