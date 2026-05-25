@@ -47,7 +47,24 @@ public class PatientService : IPatientService
     {
         var p = await _repository.GetByIdAsync(id);
         if (p == null) return null;
-        return new PatientResponse { PatientId = p.PatientId, Name = p.Name, Mobile = p.Mobile, Age = p.Age, Gender = p.Gender };
+        return new PatientResponse
+        {
+            PatientId = p.PatientId,
+            Name = p.Name,
+            Mobile = p.Mobile,
+            Age = p.Age,
+            Gender = p.Gender,
+            BloodGroup = p.BloodGroup,
+
+            Address = p.Address == null
+           ? null
+           : new AddressDto
+           {
+               Street = p.Address.Street,
+               City = p.Address.City,
+               Pincode = p.Address.Pincode
+           }
+        };
     }
 
     public async Task<PatientResponse?> GetByMobileAsync(string mobile)
