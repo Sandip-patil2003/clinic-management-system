@@ -41,4 +41,16 @@ public class VisitsController : ControllerBase
 
         return Ok(visit);
     }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAllVisitsAsync()
+    {
+        var visits = await _visitService.GetAllVisitsAsync();
+        return Ok(visits.Select(v => new
+        {
+            v.PatientName,
+            v.Complaint,
+            v.VisitDate
+        }));
+    }
 }

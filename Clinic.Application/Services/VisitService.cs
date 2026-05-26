@@ -38,6 +38,18 @@ public class VisitService : IVisitService
         };
     }
 
+    public async Task<List<RecentVisitDto>> GetAllVisitsAsync()
+    {
+        var list = await _visitRepository.GetAllVisitsAsync();
+        // Map to AllVisitDto
+        return list.Select(v => new RecentVisitDto
+        {
+            PatientName = v.PatientName,
+            Complaint = v.Complaint,
+            VisitDate = v.VisitDate
+        }).ToList();
+    }
+
     public async Task<IEnumerable<VisitSummaryDto>> GetByPatientIdAsync(Guid patientId)
     {
         var visits = await _visitRepository.GetByPatientIdAsync(patientId);

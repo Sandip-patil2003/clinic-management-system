@@ -15,11 +15,16 @@ public class PatientService : IPatientService
 
     public async Task<PatientResponse?> CreateAsync(CreatePatientRequest request)
     {
-        var address = new Address(
-        request.Address.Street,
-        request.Address.City,
-        request.Address.Pincode
-        );
+        Address? address = null;
+
+        if (request.Address != null)
+        {
+            address = new Address(
+                request.Address.Street,
+                request.Address.City,
+                request.Address.Pincode
+            );
+        }
 
         var domain = new Patient(request.Name, request.Mobile, request.Age, request.Gender, request.Concern, request.BloodGroup, address);
         await _repository.AddAsync(domain);
@@ -28,7 +33,21 @@ public class PatientService : IPatientService
         var created = await _repository.GetByMobileAsync(request.Mobile);
         if (created == null) return null;
 
-        return new PatientResponse { PatientId = created.PatientId, Name = created.Name, Mobile = created.Mobile, Age = created.Age, Gender = created.Gender };
+        return new PatientResponse
+        {
+            PatientId = created.PatientId,
+            Name = created.Name,
+            Mobile = created.Mobile,
+            Age = created.Age,
+            Gender = created.Gender,
+            BloodGroup = created.BloodGroup,
+            Address = created.Address == null ? null : new AddressDto
+            {
+                Street = created.Address.Street,
+                City = created.Address.City,
+                Pincode = created.Address.Pincode
+            }
+        };
     }
 
     public async Task<bool> DeleteAsync(Guid id)

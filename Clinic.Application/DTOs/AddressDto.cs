@@ -8,7 +8,7 @@ namespace Clinic.Application.DTOs;
 
 public class AddressDto
 {
-    public string Street { get; set; }
-    public string City { get; set; }
-    public string Pincode { get; set; }
+    public string? Street { get; set; }
+    public string? City { get; set; }
+    public string? Pincode { get; set; }
 }

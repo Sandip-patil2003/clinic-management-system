@@ -14,7 +14,7 @@ public class CreatePatientRequest
 
     public string BloodGroup { get; set; }
 
-    public AddressDto Address { get; set; }
+    public AddressDto? Address { get; set; }
 }
 
 public class PatientResponse
@@ -25,5 +25,5 @@ public class PatientResponse
     public int Age { get; set; }
     public string Gender { get; set; }
     public string BloodGroup { get; set; }
-    public AddressDto Address { get; set; }
+    public AddressDto? Address { get; set; }
 }

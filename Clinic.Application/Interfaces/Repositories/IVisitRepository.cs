@@ -10,4 +10,5 @@ public interface IVisitRepository
     Task<Guid> AddAsync(Visit visit);
     Task<int> GetVisitsCountByDateAsync(DateTime date);
     Task<List<RecentVisitDto>> GetRecentVisitsAsync(int count);
+    Task<List<RecentVisitDto>> GetAllVisitsAsync();
 }

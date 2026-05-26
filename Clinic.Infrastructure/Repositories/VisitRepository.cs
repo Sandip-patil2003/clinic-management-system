@@ -83,6 +83,19 @@ public class VisitRepository : IVisitRepository
             .ToListAsync();
     }
 
+    public async Task<List<RecentVisitDto>> GetAllVisitsAsync()
+    {
+        return await _context.Visits
+            .OrderByDescending(v => v.VisitDate)
+            .Select(v => new RecentVisitDto
+            {
+                PatientName = v.Patient.Name,
+                VisitDate = v.VisitDate,
+                Complaint = v.Complaint ?? v.Notes ?? string.Empty
+            })
+            .ToListAsync();
+    }
+
     private static Visit MapToDomain(InfraEntity entity)
     {
         // Map persistence entity to domain entity. Handle possible nulls defensively.

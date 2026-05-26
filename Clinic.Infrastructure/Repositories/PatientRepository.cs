@@ -126,25 +126,27 @@ public class PatientRepository : IPatientRepository
         {
             if (entity.Address != null)
             {
-                // Update existing address
                 entity.Address.Street = patient.Address.Street;
                 entity.Address.City = patient.Address.City;
                 entity.Address.Pincode = patient.Address.Pincode;
             }
             else
             {
-                // Create new address
-                entity.Address = new InfraEntity.Address
+                var newAddress = new InfraEntity.Address
                 {
                     AddressId = Guid.NewGuid(),
+                    PatientGuid = entity.PatientGuid,
                     Street = patient.Address.Street,
                     City = patient.Address.City,
                     Pincode = patient.Address.Pincode
                 };
+
+                await _context.Addresses.AddAsync(newAddress);
+
+                entity.Address = newAddress;
             }
         }
 
-        _context.Patients.Update(entity);
         await _context.SaveChangesAsync();
 
         return MapToDomain(entity);
